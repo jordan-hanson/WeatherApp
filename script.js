@@ -1,13 +1,25 @@
 //var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + search + "&appid=46e5338512b95557324915cc5f4b42af&units=imperial"
-
+// var storageSearch = localStorage.getItem("#search-input")
+// console.log("this is my  storage ", storageSearch)
 //click function for the input weather field
 $(document).ready(function () {
+    function renderSearchInput() {
+        var cityHistory = localStorage.getItem("#search-input")
+
+        if (cityHistory === null) {
+            return;
+        }
+    }
+
 
     $("#search-button").on("click", function () {
         var search = $("#search-input").val();
 
         $("#search-input").val("");
 
+        localStorage.setItem("history", search)
+        // document.getElementById("#history").innerHTML = localStorage.getItem("#search-input")
+        renderSearchInput();
         findWeather(search);
     });
 
@@ -28,8 +40,8 @@ $(document).ready(function () {
             console.log(weatherData.wind.speed)
 
             var cityName = $('<h2>').text(weatherData.name)
-            var temp = $('<h4>').text('Current Temp: ' + weatherData.main.temp)
-            var windSpeed = $('<h4>').text('Current wind speed: ' + weatherData.wind.speed)
+            var temp = $('<h4>').text('Current Temp: ' + weatherData.main.temp + ' F')
+            var windSpeed = $('<h4>').text('Current wind speed: ' + weatherData.wind.speed + ' MPH')
 
             $("#today").append(cityName, temp, windSpeed)
 
@@ -52,9 +64,9 @@ $(document).ready(function () {
                 //console.log('single dude from array', forecastData.list[i].dt_txt.split(' ')[1])
                 if (forecastData.list[i].dt_txt.split(' ')[1] === '00:00:00') {
                     //console.log('we found a 00:00:00 match', forecastData.list[i])
-                    var forecastDate = $('<h5>').addClass("card-body").text('Date: ' + forecastData.list[i].dt_txt)
-                    var forecastTemp = $('<h5>').addClass("card-body").text('Temp: ' + forecastData.list[i].main.temp)
-                    var forecastHumidity = $('<h5>').addClass("card-body").text('Humidity: ' + forecastData.list[i].main.humidity)
+                    var forecastDate = $('<h5>').addClass("list-group-item").text('Date: ' + forecastData.list[i].dt_txt)
+                    var forecastTemp = $('<h5>').addClass("list-group-item").text('Temp: ' + forecastData.list[i].main.temp + ' F')
+                    var forecastHumidity = $('<h5>').addClass("list-group-item").text('Humidity: ' + forecastData.list[i].main.humidity + ' %')
 
                     forecastArray.push(forecastData.list[i])
                     $("#forecast").append(forecastDate, forecastTemp, forecastHumidity)
