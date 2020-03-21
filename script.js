@@ -52,9 +52,9 @@ $(document).ready(function () {
                 //console.log('single dude from array', forecastData.list[i].dt_txt.split(' ')[1])
                 if (forecastData.list[i].dt_txt.split(' ')[1] === '00:00:00') {
                     //console.log('we found a 00:00:00 match', forecastData.list[i])
-                    var forecastDate = $('<h5>').text('Date: ' + forecastArray.dt_txt)
-                    var forecastTemp = $('<h5>').text('Temp: ' + forecastArray.main.temp)
-                    var forecastHumidity = $('<h5>').text('Humidity: ' + forecastArray.main.humidity)
+                    var forecastDate = $('<h5>').addClass("card-body").text('Date: ' + forecastData.list[i].dt_txt)
+                    var forecastTemp = $('<h5>').addClass("card-body").text('Temp: ' + forecastData.list[i].main.temp)
+                    var forecastHumidity = $('<h5>').addClass("card-body").text('Humidity: ' + forecastData.list[i].main.humidity)
 
                     forecastArray.push(forecastData.list[i])
                     $("#forecast").append(forecastDate, forecastTemp, forecastHumidity)
