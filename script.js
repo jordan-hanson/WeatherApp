@@ -59,7 +59,7 @@ $(document).ready(function () {
             $("#today").append(cityName, temp, windSpeed, icon)
 
             findForecast(search);
-
+            getUVIndex(search.coord.lat, search.coord.lon);
         })
 
     }
@@ -92,6 +92,72 @@ $(document).ready(function () {
 
         })
     }
+    function getUVIndex(lat, lon) {
+        var UVLocationURL = "http://api.openweathermap.org/data/2.5/uvi?appid=46e5338512b95557324915cc5f4b42af&lat=" + lat + "&lon" + lon
+
+        $.ajax({
+            url: UVLocationURL,
+            type: "GET"
+        }).then(function (search) {
+            var uv = $("<p>").text("UV Index: ");
+            var UvBtn = $("<span>").addClass("btn btn-sm").text(search.value);
+            console.log("this is uv", search)
+            if (search.value < 3) {
+                UvBtn.addClass("btn-success");
+            }
+            else if (search.value < 7) {
+                UvBtn.addClass("btn-warning");
+            }
+            else {
+                UvBtn.addClass("btn-danger");
+            }
+
+            $("#today").append(uv.append(btn));
+
+        })
+    }
+
+    function geoFindMe() {
+
+        const status = document.querySelector('#location');
+        const mapLink = document.querySelector('#long-latlink');
+
+        mapLink.href = '';
+        mapLink.textContent = '';
+
+        function success(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            status.textContent = '';
+            mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+            mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+        }
+
+        function error() {
+            status.textContent = 'Unable to retrieve your location';
+        }
+
+        if (!navigator.geolocation) {
+            status.textContent = 'Geolocation is not supported by your browser';
+        } else {
+            status.textContent = 'Locating…';
+            navigator.geolocation.getCurrentPosition(success, error);
+        }
+
+    }
+
+    document.querySelector('#search-input').addEventListener('click', geoFindMe);
+
+    // let crd = pos.coords;
+    // console.log('Your current position is:');
+    // console.log(`Latitude : ${crd.latitude}`);
+    // console.log(`Longitude: ${crd.longitude}`);
+    // console.log(`More or less ${crd.accuracy} meters.`);
+    // let lon = crd.longitude;
+    // let lat = crd.latitude;
+    // queryURL = buildQueryUrl(lat, lon);
+    // console.log(queryURL)
 
 
 
