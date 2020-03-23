@@ -2,6 +2,9 @@
 // var storageSearch = localStorage.getItem("#search-input")
 // console.log("this is my  storage ", storageSearch)
 //click function for the input weather field
+// var h1El = document.getElementById("#forecastTitle")
+// h1El.textContent = "5 Day Forecast"
+// body.append(h1El)
 
 $(document).ready(function () {
     function renderSearchInput() {
@@ -31,7 +34,7 @@ $(document).ready(function () {
 
     $(document).on("click", ".pastSearch", function () {
         console.log("you got clicked")
-        findWeather(search);
+        findWeather($(this).text());
     })
 
 
@@ -57,12 +60,15 @@ $(document).ready(function () {
 
             var icon = $('<img>').attr('src', "http://openweathermap.org/img/w/" + weatherData.weather[0].icon + ".png")
             $("#today").append(cityName, temp, windSpeed, icon)
+            console.log("this is the weather", weatherData)
 
             findForecast(search);
-            getUVIndex(search.coord.lat, search.coord.lon);
+            getUVIndex(weatherData.coord.lat, weatherData.coord.lon);
         })
 
     }
+
+
 
     function findForecast(search) {
         var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + search + "&appid=46e5338512b95557324915cc5f4b42af&units=imperial"
@@ -78,6 +84,7 @@ $(document).ready(function () {
                 //console.log('single dude from array', forecastData.list[i].dt_txt.split(' ')[1])
                 if (forecastData.list[i].dt_txt.split(' ')[1] === '00:00:00') {
                     //console.log('we found a 00:00:00 match', forecastData.list[i])
+
                     var container = $('<div>').addClass("inline")
                     var forecastDate = $('<h5>').addClass("list-group-item").text('Date: ' + forecastData.list[i].dt_txt.split(' ')[0])
                     var forecastTemp = $('<h5>').addClass("list-group-item").text('Temp: ' + forecastData.list[i].main.temp + ' F')
@@ -93,7 +100,7 @@ $(document).ready(function () {
         })
     }
     function getUVIndex(lat, lon) {
-        var UVLocationURL = "http://api.openweathermap.org/data/2.5/uvi?appid=46e5338512b95557324915cc5f4b42af&lat=" + lat + "&lon" + lon
+        var UVLocationURL = "http://api.openweathermap.org/data/2.5/uvi?appid=46e5338512b95557324915cc5f4b42af&lat=" + lat + "&lon=" + lon
 
         $.ajax({
             url: UVLocationURL,
@@ -112,7 +119,7 @@ $(document).ready(function () {
                 UvBtn.addClass("btn-danger");
             }
 
-            $("#today").append(uv.append(btn));
+            $("#today").append(uv.append(UvBtn));
 
         })
     }
@@ -148,20 +155,6 @@ $(document).ready(function () {
     }
 
     document.querySelector('#search-input').addEventListener('click', geoFindMe);
-
-    // let crd = pos.coords;
-    // console.log('Your current position is:');
-    // console.log(`Latitude : ${crd.latitude}`);
-    // console.log(`Longitude: ${crd.longitude}`);
-    // console.log(`More or less ${crd.accuracy} meters.`);
-    // let lon = crd.longitude;
-    // let lat = crd.latitude;
-    // queryURL = buildQueryUrl(lat, lon);
-    // console.log(queryURL)
-
-
-
-
 })
 
 
