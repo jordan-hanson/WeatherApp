@@ -3,17 +3,7 @@
 ## Overview
 ​
 The purpose of this application is to search the city of your choice and give you the current weather conditons. It also will give you your next 5 day forecast.
-​
-### Gallery
-​
-Home:
 
-​
-Sign In:
-![Home Page View](./relativeLinkToImage.png "Home Page View")
-​
-Super Cool Page:
-![Home Page View](./relativeLinkToImage.png "Home Page View")
 ​
 ### Problem
 ​
